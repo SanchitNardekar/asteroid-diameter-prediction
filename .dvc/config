@@ -1,4 +1,4 @@
 [core]
-    remote = asteroid-data
-['remote "asteroid-data"']
-    url = gdrive://1PblKY4UMaDqLJLRvOcO6VxjwG4odYgqY
+    remote = storage
+['remote "storage"']
+    url = gdrive://1APD2zRE0slot4CpOQR0QL6hikF8xyQnt
