@@ -1,11 +1,10 @@
 # src/asteroid-diameter-prediction/train/make_dataset.py
 
 import click
-import logging
+from loguru import logger
 import os
 
 import pandas as pd
-
 
 @click.command()
 @click.option('--reprocess', default=False, help='Runs process pipeline from scratch')
@@ -13,19 +12,14 @@ def main(reprocess: bool = False):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
-    logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
 
     input_path = '~/asteroid-diameter-prediction/data/Asteroid.csv'
     output_path = '~/asteroid-diameter-prediction/data/Asteroid_processed.csv'
 
-    if reprocess or not os.path.exists(output_path):
+    if reprocess:
         df = pd.read_csv(input_path)
 
-        try: 
-            df.diameter = pd.to_numeric(df.diameter)
-        except ValueError as e:
-            print("ERROR:", e)
+        logger.info('Processing data...')
 
         converted_vals = []
         for idx, val in enumerate(df.diameter.tolist()):
@@ -44,6 +38,9 @@ def main(reprocess: bool = False):
         # df_cleaned = df_cleaned[[col for col in df_cleaned.columns if (df_cleaned[col].count() / len(df_cleaned)) > 0.95]]
 
         df_numerical.to_csv(output_path, index=False)
+        logger.success(f'Created output file @ {output_path}')
+    else:
+        logger.info("Output file already exists.")
 
 
 
