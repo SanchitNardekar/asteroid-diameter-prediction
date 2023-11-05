@@ -3,6 +3,7 @@
 import click
 from loguru import logger
 from pathlib import Path
+import dotenv
 import os
 
 import pandas as pd
@@ -48,7 +49,8 @@ def VIF_calc(df):
 
 @click.command()
 @click.option('--reprocess', default=False, help='Runs process pipeline from scratch')
-def main(reprocess: bool = False):
+@click.option('--env', default='dev', help='Defines the environment to run the pipeline')
+def main(reprocess: bool = False, env: str = 'dev'):
     """ Runs data processing scripts to turn raw data from into
         cleaned data ready to be analyzed.
 
@@ -56,13 +58,13 @@ def main(reprocess: bool = False):
             reprocess, bool = TRUE if reprocessing raw data from scratch, else False
     """
 
-    input_path = '/Users/sanchitnardekar/asteroid-diameter-prediction/data/Asteroid.csv'
-    output_path = '/Users/sanchitnardekar/asteroid-diameter-prediction/data/Asteroid_processed.csv'
+    dotenv.load_dotenv()
+
+    input_path = os.environ["DEV_RAW_DATA"] #if env == 'dev'
+    output_path = os.environ["DEV_PROCESSED_DATA"]
 
     if reprocess or not Path(output_path).exists():
         df = pd.read_csv(input_path)
-
-        logger.info('Processing data...')
 
         converted_vals = []
         for idx, val in enumerate(df.diameter.tolist()):
@@ -74,9 +76,12 @@ def main(reprocess: bool = False):
         # Convert response to numerical
         df.diameter = converted_vals
         df.diameter = pd.to_numeric(df.diameter)
+        logger.debug(f'columns initial: {df.columns}')
 
         # Drop columns with more than 5% of NULLs and rows with NULLs TODO: replace with median imputer
+        df = df[df.diameter.notnull()]
         df = df[[col for col in df.columns if (df[col].count() / len(df)) > 0.95]]
+        logger.debug(f'columns after NULLs step 1: {df.columns}')
         df = df.dropna()
 
         # Drop rows with negative values
@@ -87,6 +92,7 @@ def main(reprocess: bool = False):
 
         # Get the variables with the least multi-collinearity
         df = df[[col for col, vif in zip(df.columns, VIF_calc(df).values) if vif < 5]]
+        logger.debug(f'columns after vif step: {df.columns}')
 
         df.to_csv(output_path, index=False)
         logger.success(f'Created output file @ {output_path}')
