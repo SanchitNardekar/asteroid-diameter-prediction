@@ -17,6 +17,7 @@ google-api-python-client = "^2.105.0"
 dvc = "^3.28.0"
 dvc-gdrive = "^2.20.0"
 loguru = "^0.7.2"
+statsmodels = "^0.14.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
