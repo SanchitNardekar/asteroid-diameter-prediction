@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "asteroid-diameter-prediction"
-version = "0.2.0"
+version = "0.3.0"
 description = "Predicting asteroid diameters from the Open Asteroid Dataset https://www.kaggle.com/datasets/basu369victor/prediction-of-asteroid-diameter. Toy repo to learn MLOps best practices."
 authors = ["SanchitNardekar <sanchit@motorway.co.uk>"]
 readme = "README.md"
@@ -30,3 +30,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 make-dataset = "asteroid_diameter_prediction.train.make_dataset:main"
 enrich-features = "asteroid_diameter_prediction.train.enrich_features:main"
+train-model = "asteroid_diameter_prediction.train.train_model:main"
