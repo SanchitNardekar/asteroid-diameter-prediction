@@ -1,0 +1,31 @@
+stages:
+  make:
+    cmd: poetry run make-dataset --reprocess True
+    deps:
+    - data/Asteroid.csv
+    - src/asteroid_diameter_prediction/train/make_dataset.py
+    params:
+    - make.vif_threshold
+    outs:
+    - data/Asteroid_processed.csv
+    
+  enrich:
+    cmd: poetry run enrich-features --reprocess True
+    deps:
+    - data/Asteroid_processed.csv
+    - src/asteroid_diameter_prediction/train/enrich_features.py
+    params:
+    - enrich.log_features
+    outs:
+    - data/Asteroid_enriched.csv
+
+  train:
+    cmd: poetry run train-model
+    deps:
+    - data/Asteroid_enriched.csv
+    - src/asteroid_diameter_prediction/train/train_model.py
+    params:
+    - train.seed
+    - train.split
+    outs:
+    - models/diameter_prediction_model.joblib
