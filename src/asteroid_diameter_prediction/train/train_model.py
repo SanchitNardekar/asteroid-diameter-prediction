@@ -35,7 +35,7 @@ def main(env: str = 'dev'):
     
     reg = linear_model.LinearRegression()
 
-    kfold = model_selection.KFold(n_splits = 10, shuffle=True, random_state = 42)
+    kfold = model_selection.KFold(n_splits = 10, shuffle=True, random_state = utils.params['train']['seed'])
     logger.debug('Created K-Fold splits.')
 
     scores = []
@@ -50,7 +50,7 @@ def main(env: str = 'dev'):
     df_kfold = pd.DataFrame(data = np.array(scores), columns = ['RSquared', 'RMSE'])
     logger.info("K-Fold CV:\n", df_kfold)
 
-    x_train, x_test, y_train, y_test = model_selection.train_test_split(X, Y, test_size=0.2, random_state = 42, shuffle = True)
+    x_train, x_test, y_train, y_test = model_selection.train_test_split(X, Y, test_size = utils.params['train']['split'], random_state = utils.params['train']['seed'], shuffle = True)
 
     reg.fit(x_train, y_train)
     logger.success('Fitted model on training set')
@@ -72,6 +72,6 @@ def main(env: str = 'dev'):
     # plt.legend()
     # plt.show()
 
-    model_path = utils.get_git_root() + '/src/asteroid_diameter_prediction/models/diameter_prediction_model.sav'
+    model_path = utils.get_git_root() + '/models/diameter_prediction_model.joblib'
     pickle.dump(reg, open(model_path, 'wb'))
     logger.success(f'Model saved @ {model_path}')

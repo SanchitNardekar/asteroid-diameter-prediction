@@ -1,0 +1,9 @@
+make:
+  vif_threshold: 5
+
+enrich:
+  log_features: True
+
+train:
+  split: 0.2
+  seed: 42

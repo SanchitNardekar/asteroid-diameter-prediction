@@ -27,3 +27,5 @@ def get_params():
     with open(Path(get_git_root()) / "params.yaml") as file:
         model_args = yaml.load(file, Loader=yaml.FullLoader)
     return model_args
+
+params = get_params()

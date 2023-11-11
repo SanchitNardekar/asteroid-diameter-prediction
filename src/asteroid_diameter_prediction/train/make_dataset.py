@@ -7,6 +7,7 @@ import dotenv
 import os
 
 import pandas as pd
+from asteroid_diameter_prediction.utils import params
 
 
 def drop_negative(df):
@@ -91,7 +92,7 @@ def main(reprocess: bool = False, env: str = 'dev'):
         df = df[[col for col, dtype in zip(df.columns, df.dtypes) if dtype != object]]
 
         # Get the variables with the least multi-collinearity
-        df = df[[col for col, vif in zip(df.columns, VIF_calc(df).values) if vif < 5]]
+        df = df[[col for col, vif in zip(df.columns, VIF_calc(df).values) if vif < params['make']['vif_threshold']]]
         logger.debug(f'columns after vif step: {df.columns}')
 
         df.to_csv(output_path, index=False)

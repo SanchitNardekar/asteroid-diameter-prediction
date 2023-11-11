@@ -8,7 +8,7 @@ import os
 
 import pandas as pd
 import numpy as np
-
+from asteroid_diameter_prediction.utils import params
 
 @click.command()
 @click.option('--reprocess', default=False, help='Runs process pipeline from scratch')
@@ -30,8 +30,9 @@ def main(reprocess: bool = False, env: str = 'dev'):
         # X = df_features.drop(['diameter', 'a', 'q', 'ad', 'per'], axis=1)
 
         # df_features['e:n'] = df_features.e * df_features.n
-        for col in df_features.columns:
-            df_features["log "+ col] = df_features[col].apply(np.log)
+        if params['enrich']['log_features']:
+            for col in df_features.columns:
+                df_features["log "+ col] = df_features[col].apply(np.log)
 
         # df_features['log e:log n'] = df_features['log e'] * df_features['log n']
         # df_features['log H: log n_obs_used'] = df_features['log H'] * df_features['log n_obs_used']
