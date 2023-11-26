@@ -28,27 +28,27 @@ stages:
       size: 13711349
     - path: src/asteroid_diameter_prediction/train/enrich_features.py
       hash: md5
-      md5: e895d68abfbce44c136742a1b40289f7
-      size: 1674
+      md5: 961af455b17d34ba99d1fcfb5c0b21a2
+      size: 1687
     params:
       params.yaml:
         enrich.log_features: true
     outs:
     - path: data/Asteroid_enriched.csv
       hash: md5
-      md5: 5384fd3009e5dac60966a103b4527cd7
-      size: 34645519
+      md5: 8177442a1fb0aa704ea6ec576975a7e1
+      size: 33804320
   train:
     cmd: poetry run train-model
     deps:
     - path: data/Asteroid_enriched.csv
       hash: md5
-      md5: 5384fd3009e5dac60966a103b4527cd7
-      size: 34645519
+      md5: 8177442a1fb0aa704ea6ec576975a7e1
+      size: 33804320
     - path: src/asteroid_diameter_prediction/train/train_model.py
       hash: md5
-      md5: c5cc961d2ff3ef30d6f964a363018419
-      size: 2938
+      md5: 4682fde217c33a4cca1961a9a216e25a
+      size: 3554
     params:
       params.yaml:
         train.seed: 42
@@ -56,5 +56,5 @@ stages:
     outs:
     - path: models/diameter_prediction_model.joblib
       hash: md5
-      md5: 23c953ee9af3d83546393880e25414cc
-      size: 915
+      md5: a0a8a592d503403d8a20fa565cd83e2d
+      size: 1304

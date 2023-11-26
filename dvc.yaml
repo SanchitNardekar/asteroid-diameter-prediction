@@ -8,7 +8,7 @@ stages:
     - make.vif_threshold
     outs:
     - data/Asteroid_processed.csv
-    
+
   enrich:
     cmd: poetry run enrich-features --reprocess True
     deps:
@@ -29,3 +29,17 @@ stages:
     - train.split
     outs:
     - models/diameter_prediction_model.joblib
+
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step
+- dvclive/plots/images
+- dvclive/plots/custom/Coefficient values.json:
+    template: bar_horizontal
+    x: column
+    y: coef
+    title: Coefficient values for Asteroid diameter prediction
+    x_label: Feature
+    y_label: Coefficient value

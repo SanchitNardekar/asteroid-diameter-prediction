@@ -42,7 +42,7 @@ def main(reprocess: bool = False, env: str = 'dev'):
 
         df = pd.concat([df_features, df.diameter], axis=1)
 
-        df.to_csv(enriched_path)
+        df.to_csv(enriched_path, index=False)
         logger.success(f'Enriched dataset created at {enriched_path}')
     else:
         logger.info("Enriched file already exists")

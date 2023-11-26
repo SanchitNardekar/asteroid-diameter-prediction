@@ -5,12 +5,15 @@ from loguru import logger
 from pathlib import Path
 import dotenv
 import os
+import joblib
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn import metrics, linear_model, model_selection
 from scipy import stats
-import pickle
+from dvclive import Live
 
 from asteroid_diameter_prediction import utils
 
@@ -48,7 +51,7 @@ def main(env: str = 'dev'):
                        (np.sqrt(metrics.mean_squared_error(y_test, reg.predict(x_test))))])
 
     df_kfold = pd.DataFrame(data = np.array(scores), columns = ['RSquared', 'RMSE'])
-    logger.info("K-Fold CV:\n", df_kfold)
+    logger.info(f"K-Fold CV: {df_kfold.RSquared.values}")
 
     x_train, x_test, y_train, y_test = model_selection.train_test_split(X, Y, test_size = utils.params['train']['split'], random_state = utils.params['train']['seed'], shuffle = True)
 
@@ -64,14 +67,32 @@ def main(env: str = 'dev'):
 
     logger.info("Coefficient Analysis:\n", df_coef)
     
-    logger.info("R-Squared: {0:.3f} \nRMSE: {1:.3f}".format(reg.score(x_test, y_test), 
-                                    np.sqrt(metrics.mean_squared_error(y_test, reg.predict(x_test)))))
+    rsquared = reg.score(x_test, y_test)
+    rmse = np.sqrt(metrics.mean_squared_error(y_test, reg.predict(x_test)))
 
-    # sns.distplot(y_test.values, kde=True, label = 'True')
-    # sns.distplot(reg.predict(x_test), kde=True, label = 'Prediction')
-    # plt.legend()
-    # plt.show()
+    logger.info("R-Squared: {0:.3f} \nRMSE: {1:.3f}".format(rsquared, rmse))
+
+    with Live() as live:
+        live.log_metric("$R^2$", rsquared)
+        live.log_metric("RMSE", rmse)
+
+        coef_live = df_coef[['column', 'coef']].to_dict('records')
+        live.log_plot(
+            "Coefficient values",
+            coef_live,
+            x='column',
+            y='coef',
+            template='bar_horizontal',
+            title='Coefficient values for Asteroid diameter prediction',
+            x_label='Feature',
+            y_label='Coefficient value'
+        )
+
+        fig_rsquared, ax_rsquared = plt.subplots()
+        sns.kdeplot(df_kfold['RSquared'].values, ax=ax_rsquared)
+        plt.title('K-Fold $R^2$')
+        live.log_image('K-Fold $R^2$', fig_rsquared)
 
     model_path = utils.get_git_root() + '/models/diameter_prediction_model.joblib'
-    pickle.dump(reg, open(model_path, 'wb'))
+    joblib.dump(reg, model_path)
     logger.success(f'Model saved @ {model_path}')
