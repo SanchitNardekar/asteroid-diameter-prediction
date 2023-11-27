@@ -13,19 +13,19 @@ stages:
       size: 3605
     params:
       params.yaml:
-        make.vif_threshold: 10
+        make.vif_threshold: 5
     outs:
     - path: data/Asteroid_processed.csv
       hash: md5
-      md5: 7919429ab2a01feb1151a71203621e56
-      size: 13711349
+      md5: 2f210b2f721ea5a014c031d9531960e4
+      size: 12469304
   enrich:
     cmd: poetry run enrich-features --reprocess True
     deps:
     - path: data/Asteroid_processed.csv
       hash: md5
-      md5: 7919429ab2a01feb1151a71203621e56
-      size: 13711349
+      md5: 2f210b2f721ea5a014c031d9531960e4
+      size: 12469304
     - path: src/asteroid_diameter_prediction/train/enrich_features.py
       hash: md5
       md5: 961af455b17d34ba99d1fcfb5c0b21a2
@@ -36,15 +36,15 @@ stages:
     outs:
     - path: data/Asteroid_enriched.csv
       hash: md5
-      md5: 8177442a1fb0aa704ea6ec576975a7e1
-      size: 33804320
+      md5: 129a0bd0b25b501239fd88ef07dee661
+      size: 27603049
   train:
     cmd: poetry run train-model
     deps:
     - path: data/Asteroid_enriched.csv
       hash: md5
-      md5: 8177442a1fb0aa704ea6ec576975a7e1
-      size: 33804320
+      md5: 129a0bd0b25b501239fd88ef07dee661
+      size: 27603049
     - path: src/asteroid_diameter_prediction/train/train_model.py
       hash: md5
       md5: 4682fde217c33a4cca1961a9a216e25a
@@ -56,5 +56,5 @@ stages:
     outs:
     - path: models/diameter_prediction_model.joblib
       hash: md5
-      md5: a0a8a592d503403d8a20fa565cd83e2d
-      size: 1304
+      md5: ebd32735ed10d6cd5e2cd6dbd8daf0c3
+      size: 1176
