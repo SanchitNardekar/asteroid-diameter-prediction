@@ -1,9 +1,9 @@
 make:
-  vif_threshold: 10
+  vif_threshold: 15
 
 enrich:
-  log_features: True
+  log_features: true
 
 train:
-  split: 0.2
+  split: 0.3
   seed: 42

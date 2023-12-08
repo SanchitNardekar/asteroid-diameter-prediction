@@ -13,7 +13,7 @@ stages:
       size: 3605
     params:
       params.yaml:
-        make.vif_threshold: 10
+        make.vif_threshold: 15
     outs:
     - path: data/Asteroid_processed.csv
       hash: md5
@@ -47,14 +47,14 @@ stages:
       size: 33804320
     - path: src/asteroid_diameter_prediction/train/train_model.py
       hash: md5
-      md5: 4682fde217c33a4cca1961a9a216e25a
+      md5: 6b37aec0a8a8cb60a46123334e481e24
       size: 3554
     params:
       params.yaml:
         train.seed: 42
-        train.split: 0.2
+        train.split: 0.3
     outs:
     - path: models/diameter_prediction_model.joblib
       hash: md5
-      md5: a0a8a592d503403d8a20fa565cd83e2d
+      md5: 9126ba17d173e4d5fa4ea05c42142fec
       size: 1304

@@ -33,13 +33,19 @@ stages:
 metrics:
 - dvclive/metrics.json
 plots:
+- column vs coef:
+    template: simple
+    x: column
+    y:
+      dvclive/plots/custom/Coefficient_values.json: coef
+
 - dvclive/plots/metrics:
     x: step
 - dvclive/plots/images
-- dvclive/plots/custom/Coefficient values.json:
+- dvclive/plots/custom/Coefficient_values.json:
     template: bar_horizontal
-    x: column
-    y: coef
+    x: coef
+    y: column
     title: Coefficient values for Asteroid diameter prediction
     x_label: Feature
     y_label: Coefficient value

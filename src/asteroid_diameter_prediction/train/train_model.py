@@ -78,10 +78,10 @@ def main(env: str = 'dev'):
 
         coef_live = df_coef[['column', 'coef']].to_dict('records')
         live.log_plot(
-            "Coefficient values",
+            "Coefficient_values",
             coef_live,
-            x='column',
-            y='coef',
+            x='coef',
+            y='column',
             template='bar_horizontal',
             title='Coefficient values for Asteroid diameter prediction',
             x_label='Feature',
