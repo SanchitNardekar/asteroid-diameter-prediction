@@ -1,4 +1,4 @@
-.PHONY: clean install deps-check
+.PHONY: clean install deps
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -27,8 +27,7 @@ install:
 	poetry install
 
 ## Use this to run poetry env and dependency checks
-deps-check: 
-	poetry shell
+deps: 
 	poetry install --sync
 	poetry check
 

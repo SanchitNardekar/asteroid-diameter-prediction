@@ -34,10 +34,10 @@ metrics:
 - dvclive/metrics.json
 plots:
 - column vs coef:
-    template: simple
-    x: column
+    template: bar_horizontal
+    x: coef
     y:
-      dvclive/plots/custom/Coefficient_values.json: coef
+      dvclive/plots/custom/Coefficient_values.json: column
 
 - dvclive/plots/metrics:
     x: step

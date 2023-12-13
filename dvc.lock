@@ -9,11 +9,11 @@ stages:
       size: 170117548
     - path: src/asteroid_diameter_prediction/train/make_dataset.py
       hash: md5
-      md5: 7e30616e8225d1d21fae549fb3293714
-      size: 3605
+      md5: 742297daba5901d962d390545eb060fc
+      size: 3611
     params:
       params.yaml:
-        make.vif_threshold: 15
+        make.vif_threshold: 20
     outs:
     - path: data/Asteroid_processed.csv
       hash: md5
@@ -28,8 +28,8 @@ stages:
       size: 13711349
     - path: src/asteroid_diameter_prediction/train/enrich_features.py
       hash: md5
-      md5: 961af455b17d34ba99d1fcfb5c0b21a2
-      size: 1687
+      md5: f246be70a4ca3b5ec9f265e0249a9760
+      size: 1693
     params:
       params.yaml:
         enrich.log_features: true
@@ -47,8 +47,8 @@ stages:
       size: 33804320
     - path: src/asteroid_diameter_prediction/train/train_model.py
       hash: md5
-      md5: 6b37aec0a8a8cb60a46123334e481e24
-      size: 3554
+      md5: d7937a8d600d608250006dd64c8261ee
+      size: 3560
     params:
       params.yaml:
         train.seed: 42
@@ -58,3 +58,5 @@ stages:
       hash: md5
       md5: 9126ba17d173e4d5fa4ea05c42142fec
       size: 1304
+  dummy:
+    cmd: echo "Dummy stage"

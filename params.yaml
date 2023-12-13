@@ -1,5 +1,5 @@
 make:
-  vif_threshold: 15
+  vif_threshold: 20
 
 enrich:
   log_features: true
